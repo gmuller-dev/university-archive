@@ -9,7 +9,7 @@ A consolidated archive of university projects and coursework.
 | Project_IA54 | Java | AI-related coursework |
 | Project_LO52 | Kotlin | Embedded systems project |
 | Gestion-offre-de-formation | Java | Training offer management system (LO54) |
-| NDF | C | Low-level systems project |
+| NDF | PHS | Internship expense report management project |
 | Mini-Projet-Jeu-Tir | Python | Mini shooting game |
 | Mini-Projet-PyPendu | Python | Hangman game in console |
 | EducationalPlateform | JavaScript | Educational platform project |

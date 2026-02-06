@@ -1,0 +1,11 @@
+SELECTUSER«LET _azName="Expense Report;Note de frais"»
+«VAR NEW _Visible=0»
+«INCLUDE bstatus=«#SQLLIBRARY#»:OSSMenuProcInsert.phs;_MerchantId=«idMerchant»;_LibraryId=NDF_LIBRARY_ID;;_iUserRight=RIGHT_CLIENT_MANAGEMENT;_iMinXRightLevel=0;_iMinOwnerRightLevel=RIGHT_OWNER;_azScript="NDF_MAIN_view.phs";_MerchantProcPageId=NDF_MAIN_PAGE_ID»
+
+«*REGISTER PAGES*»
+«INCLUDE _Visible = NDF:NDF_MAIN_model.phs#RegisterSystemPage»
+«INCLUDE _Visible = NDF:NDF_ADDWORKER_model.phs#RegisterSystemPage»
+«INCLUDE _Visible = NDF:NDF_VIEWACCOUNT_model.phs#RegisterSystemPage»
+«INCLUDE _Visible = NDF:NDF_SELECTUSER_model.phs#RegisterSystemPage»
+«INCLUDE _Visible = NDF:NDF_VALID_model.phs#RegisterSystemPage»
+«RETURN _Visible»

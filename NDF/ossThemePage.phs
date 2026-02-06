@@ -1,0 +1,3 @@
+«VAR NEW _Visible=0»
+    «INCLUDE _Visible=«#SQLLIBRARY#»:OSSThemePageDefaultView.phs»
+«RETURN _Visible» 

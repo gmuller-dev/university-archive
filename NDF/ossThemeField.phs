@@ -1,0 +1,18 @@
+«VAR NEW _Visible=0»
+
+«IF _PageId == NDF_MAIN_PAGE_ID»
+    «INCLUDE _Visible = NDF:NDF_MAIN_model.phs#CallbackField»
+«ENDIF»
+«IF _PageId == NDF_ADDWORKER_PAGE_ID»
+    «INCLUDE _Visible = NDF:NDF_ADDWORKER_model.phs#CallbackField»
+«ENDIF»
+«IF _PageId == NDF_SELECTUSER_PAGE_ID»
+    «INCLUDE _Visible = NDF:NDF_SELECTUSER_model.phs#CallbackField»
+«ENDIF»
+«IF _PageId == NDF_VIEWACCOUNT_PAGE_ID»
+    «INCLUDE _Visible = NDF:NDF_VIEWACCOUNT_model.phs#CallbackField»
+«ENDIF»
+«IF _PageId == NDF_VALID_PAGE_ID»
+    «INCLUDE _Visible = NDF:NDF_VALID_model.phs#CallbackField»
+«ENDIF»
+«RETURN _Visible»

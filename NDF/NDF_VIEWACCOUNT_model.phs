@@ -1,0 +1,379 @@
+«PROC RegisterSystemPage»
+«IF @exists("_MerchantId") == 0 »
+    «VAR NEW _MerchantId = «idMerchant»»
+«ENDIF»
+«LET _PageName="Expense Account;Compte Frais;"»
+
+ «INCLUDE _SystemPageId=«#SQLLIBRARY#»:OSSPageRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_VIEWACCOUNT_PAGE_ID»
+ «IF _SystemPageId>0»
+    «INCLUDE _b_status=«#SQLLIBRARY#»:OSSPageUpdateOpen.phs»
+    «*Register Zone 1*»
+    «VAR NEW _ZoneName="table"»
+
+    «INCLUDE _SystemZoneId=«#SQLLIBRARY#»:OSSPageZoneRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_VIEWACCOUNT_PAGE_ID;_PageZoneId=1;_ZoneType=OSS_PAGE_ZONE_TYPE_NORMAL;_ZoneLayoutType=OSS_PAGE_ZONE_LAYOUT_TYPE_TABLE_DATATABLE;_ZoneLayoutStyle=2;_ZoneRequired=1;_ZoneDirection=1»
+    _SystemZoneId :«_SystemZoneId»
+    «INCLUDE _SqlStatus=«#SQLLIBRARY#»:OSSPageZoneUpdateOpen.phs;PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_MerchantId=«_MerchantId»»
+    «IF _SystemZoneId>0»
+        «*Register system fields for Zone 1*»
+        «*Field 101*»
+        «LET _FieldName="Description;Description;"»
+        «INCLUDE _SystemFieldId=«#SQLLIBRARY#»:OSSPageZoneFieldRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_VIEWACCOUNT_PAGE_ID;_PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_FieldId=101;_FieldType=OSS_PAGE_ZONE_FIELD_TYPE_STATIC_TEXT;_FieldRequired=2;_FieldUnique=2;_FieldHAlign=0»
+        «*Field 102*»
+
+        «LET _FieldName="Amount;Montant"»
+        «INCLUDE _SystemFieldId=«#SQLLIBRARY#»:OSSPageZoneFieldRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_VIEWACCOUNT_PAGE_ID;_PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_FieldId=102;_FieldType=OSS_PAGE_ZONE_FIELD_TYPE_STATIC_TEXT;_FieldRequired=2;_FieldUnique=2;_FieldHAlign=0»
+        «LET _FieldName="Date;Date"»
+        «INCLUDE _SystemFieldId=«#SQLLIBRARY#»:OSSPageZoneFieldRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_VIEWACCOUNT_PAGE_ID;_PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_FieldId=103;_FieldType=OSS_PAGE_ZONE_FIELD_TYPE_STATIC_TEXT;_FieldRequired=2;_FieldUnique=2;_FieldHAlign=0»
+
+        «LET _FieldName="Reimburstment Date;Date de Remboursement"»
+        «INCLUDE _SystemFieldId=«#SQLLIBRARY#»:OSSPageZoneFieldRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_VIEWACCOUNT_PAGE_ID;_PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_FieldId=104;_FieldType=OSS_PAGE_ZONE_FIELD_TYPE_STATIC_TEXT;_FieldRequired=2;_FieldUnique=2;_FieldHAlign=0»
+
+        «LET _FieldName="Amount Reimburst;Montant Remboursé"»
+        «INCLUDE _SystemFieldId=«#SQLLIBRARY#»:OSSPageZoneFieldRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_VIEWACCOUNT_PAGE_ID;_PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_FieldId=105;_FieldType=OSS_PAGE_ZONE_FIELD_TYPE_STATIC_TEXT;_FieldRequired=2;_FieldUnique=2;_FieldHAlign=0»
+
+        «LET _FieldName="Modify;Modifier"»
+        «INCLUDE _SystemFieldId=«#SQLLIBRARY#»:OSSPageZoneFieldRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_VIEWACCOUNT_PAGE_ID;_PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_FieldId=106;_FieldType=OSS_PAGE_ZONE_FIELD_TYPE_STATIC_TEXT;_FieldRequired=2;_FieldUnique=2;_FieldHAlign=0»
+
+        «LET _FieldName="Validate;Valider"»
+        «INCLUDE _SystemFieldId=«#SQLLIBRARY#»:OSSPageZoneFieldRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_VIEWACCOUNT_PAGE_ID;_PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_FieldId=107;_FieldType=OSS_PAGE_ZONE_FIELD_TYPE_STATIC_TEXT;_FieldRequired=2;_FieldUnique=2;_FieldHAlign=0»
+
+
+        «*Register other fields by calling OSSPageZoneFieldRegister again*»
+    «ENDIF»
+    «INCLUDE _SqlStatus=«#SQLLIBRARY#»:OSSPageZoneUpdateClose.phs;PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_MerchantId=«_MerchantId»»
+
+
+    «*Register Zone 2*»
+    «VAR NEW _ZoneName="Buttons"»
+
+    «INCLUDE _SystemZoneId=«#SQLLIBRARY#»:OSSPageZoneRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_VIEWACCOUNT_PAGE_ID;_PageZoneId=2;_ZoneType=OSS_PAGE_ZONE_TYPE_NORMAL;_ZoneLayoutType=OSS_PAGE_ZONE_LAYOUT_TYPE_MENU_NORMAL;_ZoneLayoutStyle=2;_ZoneRequired=1;_ZoneDirection=1»
+    _SystemZoneId :«_SystemZoneId»
+    «INCLUDE _SqlStatus=«#SQLLIBRARY#»:OSSPageZoneUpdateOpen.phs;PageZoneId=2;_FieldLibraryId=NDF_LIBRARY_ID;_MerchantId=«_MerchantId»»
+    «IF _SystemZoneId>0»
+        «*Register system fields for Zone 2*»
+        «*Field 201*»
+        «LET _FieldName="Back;Retour;"»
+        «INCLUDE _SystemFieldId=«#SQLLIBRARY#»:OSSPageZoneFieldRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_VIEWACCOUNT_PAGE_ID;_PageZoneId=2;_FieldLibraryId=NDF_LIBRARY_ID;_FieldId=201;_FieldType=OSS_PAGE_ZONE_FIELD_TYPE_BUTTON;_FieldRequired=2;_FieldUnique=2;_FieldHAlign=0»
+        «LET _FieldName="Add Expense;Ajouter note de frais;"»
+        «INCLUDE _SystemFieldId=«#SQLLIBRARY#»:OSSPageZoneFieldRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_VIEWACCOUNT_PAGE_ID;_PageZoneId=2;_FieldLibraryId=NDF_LIBRARY_ID;_FieldId=202;_FieldType=OSS_PAGE_ZONE_FIELD_TYPE_BUTTON;_FieldRequired=2;_FieldUnique=2;_FieldHAlign=0»
+
+
+
+        «*Register other fields by calling OSSPageZoneFieldRegister again*»
+    «ENDIF»
+    «INCLUDE _SqlStatus=«#SQLLIBRARY#»:OSSPageZoneUpdateClose.phs;PageZoneId=2;_FieldLibraryId=NDF_LIBRARY_ID;_MerchantId=«_MerchantId»»
+
+    «*Register other zones by calling OSSPageZoneRegister again*»
+    «INCLUDE _SqlStatus=«#SQLLIBRARY#»:OSSPageUpdateClose.phs»
+«ENDIF»
+«INCLUDE _b_status=«#SQLLIBRARY#»:OSSThemePageZoneUpdateClose.phs»
+«RETURN 1»
+«/PROC»
+
+
+«PROC RegisterDefaultThemes»
+
+    «VAR NEW _b_status = 1»
+    «VAR NEW _FieldLibraryId = NDF_LIBRARY_ID »
+    «IF @toi(_PageLibraryId)==NDF_LIBRARY_ID »
+        «IF @toi(_PageId)== NDF_VIEWACCOUNT_PAGE_ID »
+
+            «* zone 1*»
+            «IF _b_status ==1 »
+                «INCLUDE _b_status = NDF:NDF_VIEWACCOUNT_model.phs#RegisterThemePagesZone_1 »
+            «ENDIF»
+            «IF _b_status ==1 »
+                «INCLUDE _b_status = NDF:NDF_VIEWACCOUNT_model.phs#RegisterThemePagesZone_2 »
+            «ENDIF»
+
+
+        «ENDIF»
+    «ENDIF»
+    «RETURN _b_status»
+«/PROC»
+
+«PROC RegisterThemePagesZone_1»
+
+    «VAR NEW _FieldLibraryId = NDF_LIBRARY_ID »
+    «VAR NEW _FieldVisible = 1»
+    «VAR NEW _PageZoneId = 1»
+    «VAR NEW _ZoneName=""»
+    «VAR NEW _b_status = 1»
+    «VAR NEW _SystemZoneId = 0 »
+    «VAR NEW [object]_objZoneInfo»
+    «VAR NEW _ZoneLabel = "" »
+    «LET _ZoneLabel="My Expenses;Mes notes de Frais"»
+    «INCLUDE _b_status=«#SQLLIBRARY#»:OSSThemePageZoneRegister.phs;_ZoneColumns=3;_ZoneVisible=1;_pZoneObject=&_objZoneInfo;_ZoneStyleTitle=OSS_PAGE_ZONE_STYLE_TITLE_NORMAL;_ZoneStyleHeader=OSS_PAGE_ZONE_STYLE_HEADER_NORMAL»
+    «IF _b_status==0»
+        «INCLUDE «#SQLLIBRARY#»:ProcDebug.phs#ErrorLog;_err_message="cannot registered Zone 1 ";_err_file="NDF_VIEWACCOUNT_model.phs#RegisterThemePagesZone_1";_err_number="0x0001";_bForce=1»
+    «ELSE»
+        «INCLUDE _b_status=«#SQLLIBRARY#»:OSSThemePageZoneUpdateOpen.phs»
+        «IF _b_status == 0»
+            «INCLUDE «#SQLLIBRARY#»:ProcDebug.phs#ErrorLog;_err_message="Zone 1 OSSThemePageZoneUpdateOpen failed";_err_file="NDF_VIEWACCOUNT_model.phs#RegisterThemePagesZone_1";_err_number="0x0002";_bForce=1»
+        «ELSE»
+            «VAR NEW _FieldColumn=1»
+            «INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneFieldRegister.phs;_FieldId=101;_FieldOrder=1»
+            «INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneFieldRegister.phs;_FieldId=102;_FieldOrder=2»
+            «INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneFieldRegister.phs;_FieldId=103;_FieldOrder=3»
+            «INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneFieldRegister.phs;_FieldId=104;_FieldOrder=4»
+            «INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneFieldRegister.phs;_FieldId=105;_FieldOrder=5»
+            «INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneFieldRegister.phs;_FieldId=106;_FieldOrder=6»
+            «INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneFieldRegister.phs;_FieldId=107;_FieldOrder=7»
+
+
+            «INCLUDE _b_status=«#SQLLIBRARY#»:OSSThemePageZoneUpdateClose.phs»
+            «IF _b_status == 0»
+                «INCLUDE «#SQLLIBRARY#»:ProcDebug.phs#ErrorLog;_err_message="Zone 1 OSSThemePageZoneUpdateClose failed";_err_file="NDF_VIEWACCOUNT_model.phs.phs#RegisterThemePagesZone_1";_err_number="0x0003";_bForce=1»
+            «ENDIF»
+        «ENDIF»
+    «ENDIF»
+    «RETURN _b_status»
+«/PROC»
+
+
+«PROC RegisterThemePagesZone_2»
+
+    «VAR NEW _FieldLibraryId = NDF_LIBRARY_ID »
+    «VAR NEW _FieldVisible = 1»
+    «VAR NEW _PageZoneId = 2»
+    «VAR NEW _ZoneName=""»
+    «VAR NEW _b_status = 1»
+    «VAR NEW _SystemZoneId = 0 »
+    «VAR NEW [object]_objZoneInfo»
+    «VAR NEW _ZoneLabel = "" »
+    «LET _ZoneLabel="expense acount buttons;boutons compte frais"»
+    «INCLUDE _b_status=«#SQLLIBRARY#»:OSSThemePageZoneRegister.phs;_ZoneColumns=3;_ZoneVisible=1;_pZoneObject=&_objZoneInfo;_ZoneStyleTitle=OSS_PAGE_ZONE_STYLE_TITLE_NONE;_ZoneStyleHeader=OSS_PAGE_ZONE_STYLE_HEADER_NORMAL»
+    «IF _b_status==0»
+        «INCLUDE «#SQLLIBRARY#»:ProcDebug.phs#ErrorLog;_err_message="cannot registered Zone 2 ";_err_file="NDF_VIEWACCOUNT_model.phs#RegisterThemePagesZone_2";_err_number="0x0001";_bForce=1»
+    «ELSE»
+        «INCLUDE _b_status=«#SQLLIBRARY#»:OSSThemePageZoneUpdateOpen.phs»
+        «IF _b_status == 0»
+            «INCLUDE «#SQLLIBRARY#»:ProcDebug.phs#ErrorLog;_err_message="Zone 2 OSSThemePageZoneUpdateOpen failed";_err_file="NDF_VIEWACCOUNT_model.phs#RegisterThemePagesZone_2";_err_number="0x0002";_bForce=1»
+        «ELSE»
+            «VAR NEW _FieldColumn=1»
+            «INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneFieldRegister.phs;_FieldId=201;_FieldOrder=1»
+            «INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneFieldRegister.phs;_FieldId=202;_FieldOrder=2»
+
+            «INCLUDE _b_status=«#SQLLIBRARY#»:OSSThemePageZoneUpdateClose.phs»
+            «IF _b_status == 0»
+                «INCLUDE «#SQLLIBRARY#»:ProcDebug.phs#ErrorLog;_err_message="Zone 2 OSSThemePageZoneUpdateClose failed";_err_file="NDF_VIEWACCOUNT_model.phs.phs#RegisterThemePagesZone_2";_err_number="0x0003";_bForce=1»
+            «ENDIF»
+        «ENDIF»
+    «ENDIF»
+    «RETURN _b_status»
+«/PROC»
+
+«PROC CallbackZone»
+«VAR NEW _Visible=_PageZoneVisible»
+    «IF _PageLibraryId==NDF_LIBRARY_ID && _PageZoneId==1»
+        «INCLUDE _Visible = NDF:NDF_VIEWACCOUNT_model.phs#CallbackZone_1»
+    «ELSEIF _PageLibraryId==NDF_LIBRARY_ID && _PageZoneId==2»
+        «INCLUDE _Visible = NDF:NDF_VIEWACCOUNT_model.phs#CallbackZone_2»
+
+    «ENDIF»
+
+    «RETURN 1»
+
+«/PROC»
+
+«PROC CallbackZone_1»
+    «VAR NEW _Visible=_PageZoneVisible»
+    «IF @exists("_PageZoneComponent")==0»
+        «VAR NEW _ZoneCallbackLibrary = "NDF" »
+        «VAR NEW _ZoneCallbackScript= "NDF_VIEWACCOUNT_model.phs#CallbackZone_1"»
+        «INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZone;_PageZoneDivId="ExpenseList";_bEmptyZone=0 »
+
+    «ENDIF»
+    «RETURN _Visible»
+«/PROC»
+«PROC CallbackZone_2»
+    «VAR NEW _Visible=_PageZoneVisible»
+
+    «IF @exists("_PageZoneComponent")==0»
+        «INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZone»
+    «ENDIF»
+
+    «RETURN _Visible»
+«/PROC»
+
+«PROC CallbackField»
+
+    «VAR NEW _Visible=-1»
+
+    «IF _ZoneFieldLibraryId==NDF_LIBRARY_ID  &&  _PageZoneId==1 &&_ZoneFieldVisible==1»
+        «INCLUDE _Visible = NDF:NDF_VIEWACCOUNT_model.phs#CallbackField_Zone_1»
+    «ELSEIF _ZoneFieldLibraryId==NDF_LIBRARY_ID  &&  _PageZoneId==2 &&_ZoneFieldVisible==1»
+        «INCLUDE _Visible = NDF:NDF_VIEWACCOUNT_model.phs#CallbackField_Zone_2»
+
+
+    «ENDIF»
+    «RETURN _Visible»
+«/PROC»
+
+
+
+«PROC CallbackField_Zone_1»
+
+
+    «VAR NEW _Visible=-1»
+    «*Field 101*»
+    «IF _ZoneFieldId == 101»
+        «LET _Visible=_ZoneFieldVisible»
+        «IF _ZoneFieldComponent==OSS_PAGE_ZONE_FIELD_COMPONENT_HEADER»
+
+        «WRITE LANGUAGE %html;Description; Description»
+
+        «ELSEIF @toi(_ZoneFieldComponent)==OSS_PAGE_ZONE_FIELD_COMPONENT_BODY»
+        «IF _NDF ="" && _id=0»
+          «WRITE LANGUAGE %html;Advance on Expenses; Avance sur Frais»
+        «ELSE»
+          «=@atohtml(_NDF)»
+        «ENDIF»
+        «ENDIF»
+    «*Field 102*»
+    «ELSEIF @toi(_ZoneFieldId) ==102 »
+
+        «LET _Visible=_ZoneFieldVisible»
+        «IF _ZoneFieldComponent==OSS_PAGE_ZONE_FIELD_COMPONENT_HEADER»
+        «WRITE LANGUAGE %html;Amount; Montant»
+        «ELSEIF @toi(_ZoneFieldComponent)==OSS_PAGE_ZONE_FIELD_COMPONENT_BODY»
+        «_Mnt»
+        «ENDIF»
+    «ELSEIF @toi(_ZoneFieldId) ==103 »
+
+        «LET _Visible=_ZoneFieldVisible»
+        «IF _ZoneFieldComponent==OSS_PAGE_ZONE_FIELD_COMPONENT_HEADER»
+        «WRITE LANGUAGE %html;Date; Date»
+        «ELSEIF @toi(_ZoneFieldComponent)==OSS_PAGE_ZONE_FIELD_COMPONENT_BODY»
+          «IF _time <> 0»
+            «=@timestr(_time;6)»
+          «ENDIF»
+        «ENDIF»
+    «ELSEIF @toi(_ZoneFieldId) ==104 »
+
+        «LET _Visible=_ZoneFieldVisible»
+        «IF _ZoneFieldComponent==OSS_PAGE_ZONE_FIELD_COMPONENT_HEADER»
+        «WRITE LANGUAGE %html;Date of Reimburstemet;Date de Remboursement»
+        «ELSEIF @toi(_ZoneFieldComponent)==OSS_PAGE_ZONE_FIELD_COMPONENT_BODY»
+          «IF _time2<>0»
+            «=@timestr(_time2;6)»
+          «ENDIF»
+        «ENDIF»
+    «ELSEIF @toi(_ZoneFieldId) ==105 »
+
+        «LET _Visible=_ZoneFieldVisible»
+        «IF _ZoneFieldComponent==OSS_PAGE_ZONE_FIELD_COMPONENT_HEADER»
+
+        «WRITE LANGUAGE %html;Amount Reimburst; Montant Remboursé»
+        «ELSEIF @toi(_ZoneFieldComponent)==OSS_PAGE_ZONE_FIELD_COMPONENT_BODY»
+        «_MntP»
+        «ENDIF»
+    «ELSEIF @toi(_ZoneFieldId) ==106 »
+
+        «LET _Visible=_ZoneFieldVisible»
+        «IF _ZoneFieldComponent==OSS_PAGE_ZONE_FIELD_COMPONENT_HEADER»
+        «WRITE LANGUAGE %html;Modify; Modifier»
+
+        «ELSEIF @toi(_ZoneFieldComponent)==OSS_PAGE_ZONE_FIELD_COMPONENT_BODY»
+
+        «IF @toi(iMan)==0»
+        «IF _id<>0 &&_id2==0»
+
+            <button class="btn-default" type="button" onclick="onModify(«_id»)"> «WRITE LANGUAGE %html;Modify ;Modifier»</button>
+
+        «ENDIF»
+        «ELSEIF @toi(iMan)==1 && _OwnerUserRight>=52»
+
+            <button class="btn-default" type="button"  onclick="onModify(«_id»)">«WRITE LANGUAGE %html;Modify ;Modifier»</button>
+
+        «ENDIF»
+
+        «ENDIF»
+    «ELSEIF @toi(_ZoneFieldId) ==107 && @toi(iMan)==1 && _OwnerUserRight>=52»
+
+        «LET _Visible=_ZoneFieldVisible»
+          «IF _ZoneFieldComponent==OSS_PAGE_ZONE_FIELD_COMPONENT_HEADER»
+          «WRITE LANGUAGE %html;Validation; Validation»
+
+          «ELSEIF @toi(_ZoneFieldComponent)==OSS_PAGE_ZONE_FIELD_COMPONENT_BODY»
+
+
+          «IF _id<>0 &&_id2==0»
+
+              <button class="btn-default" type="button" onclick="onValid(«_id»,0)"> «WRITE LANGUAGE %html;Validate;Valider»</button>
+          «ELSE»
+              <button class="btn-default" type="button" onclick="onValid(«_id»,1)"> «WRITE LANGUAGE %html;Modify;Modifier»</button>
+          «ENDIF»
+
+        «ENDIF»
+   «ENDIF»
+    «RETURN _Visible»
+«/PROC»
+
+
+
+«PROC CallbackField_Zone_2»
+    «VAR NEW _Visible=-1»
+    «*Field 201*»
+    «IF _ZoneFieldId == 201»
+        «LET _Visible=_ZoneFieldVisible»
+        «IF _ZoneFieldComponent==OSS_PAGE_ZONE_FIELD_COMPONENT_VALUE»
+        <FORM id="MyForm" name="MyForm" method="post" action="/Scripts/sql.exe">
+                  <input type="hidden" name="SqlDB" value="«SqlDB»">
+                  <input type="hidden" name="Sql" value="">
+                  <input type="hidden" name="xid" value="«xid»">
+                  <input type="hidden" name="_id" value="">
+                  <input type="hidden" name="_idU" value="«_idU»">
+                  <input type="hidden" name="iMod" value="0">
+                  <input type="hidden" name="iMan" value="«iMan»">
+                  <input type="hidden" name="iUselect" value="0">
+
+              <button class="btn-default" type="button"  onclick="onBack()">«WRITE LANGUAGE Back;Retour»</button>
+
+
+          «IF @toi(iMan)==0»
+            <script language="JavaScript">
+              function onBack() {
+                    document.MyForm.Sql.value = "NDF:NDF_MAIN_view.phs" ;
+                  document.MyForm.submit();
+              }
+            </script>
+          «ELSEIF @toi(iMan)==1 && _OwnerUserRight>=52»
+            <script language="JavaScript">
+              function onBack() {
+                    document.MyForm.Sql.value = "NDF:NDF_SELECTUSER_view.phs";
+                  document.MyForm.submit();
+              }
+            </script>
+          «ENDIF»
+        «ENDIF»
+        «ELSEIF _ZoneFieldId == 202»
+            «LET _Visible=_ZoneFieldVisible»
+            «IF _ZoneFieldComponent==OSS_PAGE_ZONE_FIELD_COMPONENT_VALUE»
+
+                  <button class="btn-default" type="button"  onclick="onAdd()">«WRITE LANGUAGE Add expense;Ajout frais»</button>
+
+
+              «IF @toi(iMan)==0»
+                <script language="JavaScript">
+                function onAdd(){
+                  document.MyForm.iUselect.value= 1;
+                  document.MyForm.Sql.value="NDF:NDF_ADDWORKER_view.phs";
+                  document.MyForm.submit();
+                }
+                </script>
+              «ELSEIF @toi(iMan)==1 && _OwnerUserRight>=52»
+              <script type="text/javascript">
+                 function onAdd(){
+                   document.MyForm.iUselect.value= 1;
+                   document.MyForm.iMan.value= 1;
+                   document.MyForm.Sql.value="NDF:NDF_ADDWORKER_view.phs";
+                   document.MyForm.submit();
+                 }
+              </script>
+              «ENDIF»
+            «ENDIF»
+
+   «ENDIF»
+    «RETURN _Visible»
+«/PROC»

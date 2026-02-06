@@ -1,0 +1,109 @@
+«* VAR *»
+«VAR NEW _b_status = 1 »
+«VAR NEW _b_session_status = 1 »
+«IF @exists("ContextViewMode") == 0»
+    «VAR NEW ContextViewMode = 0»
+«ENDIF»
+«IF @exists("_MerchantId") == 0 »
+    «VAR NEW _MerchantId = «idMerchant»»
+«ENDIF»
+
+«IF @exists("_id") == 0 »
+    «VAR NEW _id = 0»
+«ENDIF»
+
+
+«VAR NEW _NavLink = ""»
+«VAR NEW _NavLevel = 0»
+
+
+«VAR NEW _PageId = NDF_VALID_PAGE_ID »
+«VAR NEW _PageLibraryId = NDF_LIBRARY_ID»
+«VAR NEW _PageThemeId = -1 »
+«VAR NEW _PageViewMode = «ContextViewMode»»
+«VAR NEW _PageTitle = "Validation de Frais" »
+«VAR NEW _ZoneFieldLibraryId = NDF_LIBRARY_ID »
+«VAR NEW _FieldCallbackScript= "NDF_VALID_model.phs#CallbackField"»
+«VAR NEW _ZoneCallbackScript= "NDF_VALID_model.phs#CallbackZone"»
+«VAR NEW [object]_ZoneInfo»
+«VAR NEW _ZoneInfoStatus=0»
+«VAR NEW _ZoneCallbackLibrary = "NDF" »
+«VAR NEW _FieldCallbackLibrary = "NDF" »
+
+«VAR NEW _OwnerUserRights = '00000000000000000000000000000000'»
+«VAR NEW _OtherUserRights = '00000000000000000000000000000000'»
+«VAR NEW _OwnerUserRight = 0»
+«VAR NEW _OtherUserRight = 0»
+«INCLUDE _SqlStatus=NDF:ossUserRights.phs»
+«INCLUDE _SqlStatus=NDF:ossUserRights.phs;_iUserRight=0»
+@toi(_OwnerUserRight) : «=@toi(_OwnerUserRight)»
+<TABLE>
+«LIST»
+   <TR><TD>«CGINAME»</TD><TD>«CGIVALUE»</TD></TR>
+«/LIST CGI»
+</TABLE>
+«* get theme *»
+«INCLUDE _PageThemeId=«#SQLLIBRARY#»:ProcPageTheme.phs#QueryUserPageTheme»
+
+«* get page title *»
+«LET _PageTitle = @languageitem("Add Expense;Ajout de Frais;")»
+«* right*»
+«* get merchant preferences *»
+«SQLEXEC STRING _MerchantPrefs=select azCustomPrefs from «#SQLWPA#»OSSMERCHANT where idMerchant=«%d;idMerchant»»
+«* context navigation*»
+«IF @toi(ContextViewMode) == 0 »
+    «INCLUDE _NavLevel=«#SQLLIBRARY#»:ProcNavigation.phs#SecureNavigationLevel»
+    «LET _NavLink='&Sql=NDF:NDF_VALID_view.phs»
+«ENDIF»
+iUselect : «iUselect»
+«INCLUDE «#SQLLIBRARY#»:ProcNavigation.phs#PushNavigationLevel;_NavTitle=_PageTitle»
+«*Mode HTML*»
+«IF @toi(ContextViewMode) == OSS_PAGE_VIEW_MODE_HTML»
+«* start view*»
+    «INCLUDE «#SQLLIBRARY#»:Header.phs;»
+        <link rel="stylesheet" href="«#SQLWWWHOME#»/css/popup/popupMain.css" type="text/css" media="screen" />
+        <script type="text/javascript" src="«#SQLWWWHOME#»/js/popup/popup.js"></script>
+
+        «INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageOpen»
+        «* User allowed to do this ? *»
+
+            «IF _b_status <> 1»
+                «INCLUDE MessageAccessDenied.phs#MessageSystemError»
+            «ELSE»
+
+                «INCLUDE «#SQLLIBRARY#»:OSSThemePageView.phs;»
+            «ENDIF»
+
+        «INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageClose»
+
+    «INCLUDE «#SQLLIBRARY#»:Footer.phs;»
+    «*Mode edit*»
+  «ELSEIF @toi(ContextViewMode) == OSS_PAGE_VIEW_MODE_EDIT»
+    «INCLUDE «#SQLLIBRARY#»:Header.phs;»
+    «INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageOpen»
+
+
+    «IF _b_status <> 1»
+        «INCLUDE MessageAccessDenied.phs#MessageSystemError»
+    «ELSE»
+
+        «INCLUDE «#SQLLIBRARY#»:OSSThemePageView.phs;»
+    «ENDIF»
+
+    «INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageClose»
+    «INCLUDE «#SQLLIBRARY#»:Footer.phs;»
+    «*Mode de customisation*»
+  «ELSEIF @toi(ContextViewMode) == OSS_PAGE_VIEW_MODE_CUSTOMIZE»
+  «INCLUDE «#SQLLIBRARY#»:Header.phs;»
+  «INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageOpen»
+
+  «IF _b_status <> 1»
+      «INCLUDE MessageAccessDenied.phs#MessageSystemError»
+  «ELSE»
+
+      «INCLUDE «#SQLLIBRARY#»:OSSThemePageView.phs;»
+  «ENDIF»
+
+  «INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageClose»
+  «INCLUDE «#SQLLIBRARY#»:Footer.phs;»
+  «ENDIF»

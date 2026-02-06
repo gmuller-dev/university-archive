@@ -1,0 +1,27 @@
+«PROC Main»
+«IF @exists("_id") == 0 »
+    «VAR NEW _id = 0»
+«ENDIF»
+«IF  @exists("_Date")==1»
+  «INCLUDE _iDate=«#SQLLIBRARY#»:ProcDates.phs#ScanDaytimeDate;_DateString=_Date»
+«ENDIF»
+«SQLSTATUS TRANSACTION BEGIN»
+  «IF @toi(iMod)==0»
+    «SQLEXEC OBJECT facture = SELECT * from NDF_FACTURES where idNDF= «_id»»
+    «SQL insert into NDF_ACCOUNT(idNDF,idUser,dMontant,iCTime) values («_id»,«facture.idUser»,«_azMontant»,«=@daytimetotime(_iDate)») »
+    «SQL update NDF_FACTURES set idUserValid=«#SQLUSERID#»,iCTimeValid = «=@daytimetotime(_iDate)» where idNDF= «_id»  »
+  «ELSEIF @toi(iMod)==1»
+    «SQL update NDF_ACCOUNT set dMontant =«_azMontant», iCTime= «=@daytimetotime(_iDate)» where idNDF= «_id»»
+    «SQL update NDF_FACTURES set idUserValid=«#SQLUSERID#»,iCTimeValid = «=@daytimetotime(_iDate)» where idNDF= «_id»  »
+  «ENDIF»
+«SQLSTATUS TRANSACTION END»
+#SQLSTATUS# : «#SQLSTATUS#» <br>
+«VAR NEW azCGI=""»
+«LIST»
+  «IF CGINAME<>"Sql"»
+    «IF azCGI<>""»«LET azCGI=azCGI+"&"»«ENDIF»
+    «LET azCGI=azCGI+"«CGINAME»=«CGIVALUE»"»
+  «ENDIF»
+«/LIST CGI»
+<META http-equiv="Refresh" content="0;URL=/Scripts/sql.exe?Sql=NDF:NDF_VIEWACCOUNT_view.phs&«azCGI»">
+«/PROC»

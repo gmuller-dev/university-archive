@@ -1,0 +1,47 @@
+«* session *»
+«* init session *»
+«VAR NEW [object]_oSearchSession»
+«INCLUDE «#SQLLIBRARY#»:ProcSession.phs#InitSession;_pSession=&_oSearchSession;_PageLibraryId=EX_REPORT_LIBRARY_ID;_ObjectLibraryId=EX_REPORT_LIBRARY_ID;_ObjectType=OSS_OBJECT_TYPE_LIBRARY_PAGE;_ObjectId=1»
+«* open search form session *»
+«VAR NEW _SessionCallbackScript="EXPENSEREPORT_usefull.phs#InitSessionData;_MerchantId=«idMerchant»;_ClientUsage=«ContextUsage»"»
+«INCLUDE _SqlStatus=«#SQLLIBRARY#»:ProcSession.phs#OpenSearchFormSession;_pSession=&_oSearchSession;_DataObjectLibraryId=0;_DataObjectType=0;_DataObjectId=0;_CallbackLibrary="ExpenseReport";_CallbackScript=_SessionCallbackScript»
+_oSearchSession : «=@jsontostr(_oSearchSession)» <br>
+_oSearchSession._pSessionData.oSessionObjectDataEdit._Name : «=@toa(_oSearchSession.oSessionData.oSessionObjectDataEdit._Name)»<br>
+_oSearchSession._pSessionData.oSessionObjectDataEdit._Mail : «=@toa(_oSearchSession.oSessionData.oSessionObjectDataEdit._Mail)»<br>
+
+
+
+«IF  @exists("_iDate")==1»
+  «INCLUDE _DateStart=«#SQLLIBRARY#»:ProcDates.phs#ScanDaytimeDate;_DateString=_iDate»
+  _DateStart : «_DateStart»
+  «VAR NEW _DayStart=@daytimeday(_DateStart)»
+  «VAR NEW _MonthStart=@daytimemonth(_DateStart)»
+  «VAR NEW _YearStart=@daytimeyear(_DateStart)»
+  «VAR NEW _ExpenseDayStart=@daytimedate(«_DayStart»;«_MonthStart»;«_YearStart»)»
+«ENDIF»
+_ExpenseDayStart : «_ExpenseDayStart»
+
+
+SELECT * FROM NDF_FACTURES LEFT JOIN NDF_ACCOUNT ON   NDF_FACTURES.idNDF= NDF_ACCOUNT.idNdf WHERE NDF_FACTURES.idUser =«_idUser» AND NDF_ACCOUNT.idUser =«_idUser» UNION ALL SELECT * FROM NDF_FACTURES RIGHT JOIN NDF_ACCOUNT ON   NDF_FACTURES.idNDF= NDF_ACCOUNT.idNdf WHERE NDF_FACTURES.idUser =«_idUser» AND NDF_ACCOUNT.idUser =«_idUser» ORDER BY COALESCE(NDF_ACCOUNT.iCTime,NDF_FACTURES.iCTime)
+
+
+SELECT NDF_FACTURES.idNDF AS idNDF1, NDF_ACCOUNT.idNDF AS idNDF2,NDF_FACTURES.dMontant AS dMnt, NDF_FACTURES.azNDF AS azNDF, NDF_FACTURES.iCTime AS iCTime1 NDF_ACCOUNT.iCTime AS iCTime2, NDF_ACCOUNT.dMontant AS dMnt2 FROM NDF_FACTURES LEFT JOIN NDF_ACCOUNT ON   NDF_FACTURES.idNDF= NDF_ACCOUNT.idNdf WHERE NDF_FACTURES.idUser =3  UNION ALL SELECT NDF_FACTURES.idNDF AS idNDF1, NDF_ACCOUNT.idNDF AS idNDF2,NDF_FACTURES.dMontant AS dMnt, NDF_FACTURES.azNDF AS azNDF, NDF_FACTURES.iCTime AS iCTime1 NDF_ACCOUNT.iCTime AS iCTime2, NDF_ACCOUNT.dMontant AS dMnt2 FROM NDF_FACTURES RIGHT JOIN NDF_ACCOUNT ON   NDF_FACTURES.idNDF= NDF_ACCOUNT.idNdf WHERE NDF_ACCOUNT.idUser =3 AND NDF_FACTURES.idNDF IS NULL
+
+
+
+
+SELECT NDF_FACTURES.idNDF AS idNDF1, NDF_ACCOUNT.idNDF AS idNDF2, NDF_FACTURES.dMontant AS dMt, NDF_FACTURES.azNDF AS aNDF, NDF_FACTURES.iCTime AS Time1, NDF_ACCOUNT.iCTime AS Time2, NDF_ACCOUNT.dMontant AS dMt2 FROM NDF_FACTURES LEFT JOIN NDF_ACCOUNT ON   NDF_FACTURES.idNDF= NDF_ACCOUNT.idNdf WHERE NDF_FACTURES.idUser =3  UNION ALL SELECT NDF_FACTURES.idNDF AS idNDF1, NDF_ACCOUNT.idNDF AS idNDF2, NDF_FACTURES.dMontant AS dMt, NDF_FACTURES.azNDF AS aNDF, NDF_FACTURES.iCTime AS Time1, NDF_ACCOUNT.iCTime AS Time2, NDF_ACCOUNT.dMontant AS dMt2 FROM NDF_FACTURES RIGHT JOIN NDF_ACCOUNT ON   NDF_FACTURES.idNDF= NDF_ACCOUNT.idNdf WHERE NDF_ACCOUNT.idUser =3 AND NDF_FACTURES.idNDF IS NULL
+
+
+
+
+«SQLOUTPUT»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneComponent;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_BODY;_ZoneFieldComponent=OSS_PAGE_ZONE_FIELD_COMPONENT_BODY;_pZoneObject=&_TableInfo;_pZoneInfo=&_ZoneInfo;_id=«idNDF1»;_id2 =«idNDF2»;_NDF="«aNDF»";_Mnt=«dMt»;_time=«Time1»; _time2=«Time2»;_MntP=«dMt2»»
+«/SQLOUTPUT SELECT NDF_FACTURES.idNDF AS idNDF1, NDF_ACCOUNT.idNDF AS idNDF2, NDF_FACTURES.dMontant AS dMt, NDF_FACTURES.azNDF AS aNDF, NDF_FACTURES.iCTime AS Time1, NDF_ACCOUNT.iCTime AS Time2, NDF_ACCOUNT.dMontant AS dMt2 FROM NDF_FACTURES LEFT JOIN NDF_ACCOUNT ON   NDF_FACTURES.idNDF= NDF_ACCOUNT.idNdf WHERE NDF_FACTURES.idUser =«_idUser»  UNION ALL SELECT NDF_FACTURES.idNDF AS idNDF1, NDF_ACCOUNT.idNDF AS idNDF2, NDF_FACTURES.dMontant AS dMt, NDF_FACTURES.azNDF AS aNDF, NDF_FACTURES.iCTime AS Time1, NDF_ACCOUNT.iCTime AS Time2, NDF_ACCOUNT.dMontant AS dMt2 FROM NDF_FACTURES RIGHT JOIN NDF_ACCOUNT ON   NDF_FACTURES.idNDF= NDF_ACCOUNT.idNdf WHERE NDF_ACCOUNT.idUser =«_idUser» AND NDF_FACTURES.idNDF IS NULL»«*Query temporaire*»
+
+
+
+
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneOpen;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_HEADER;_pZoneInfo=&(_ZoneInfo);_pZoneObject=&(_TableInfo)»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneComponent;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_HEADER;_ZoneFieldComponent=OSS_PAGE_ZONE_FIELD_COMPONENT_HEADER;_pZoneObject=&_TableInfo;_pZoneInfo=&_ZoneInfo »
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneClose;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_HEADER;_pZoneInfo=&(_ZoneInfo);_pZoneObject=&(_TableInfo)»

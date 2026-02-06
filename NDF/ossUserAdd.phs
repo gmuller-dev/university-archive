@@ -1,0 +1,29 @@
+
+«VAR NEW _SqlStatus = 1»
+«VAR NEW _OwnerUserRights = '00000000000000000000000000000000'»
+«VAR NEW _OtherUserRights = '00000000000000000000000000000000'»
+«VAR NEW _GroupUserRights = '00000000000000000000000000000000'»
+«VAR NEW _OtherGroupUserRights = '00000000000000000000000000000000'»
+
+«SQLREPEAT»
+        «IF @exists("_OwnerUserRight«%d;_LibraryId»_«#SQLREPEAT#»") == 0»
+            «VAR NEW _OwnerUserRight«%d;_LibraryId»_«#SQLREPEAT#» = 0»
+        «ENDIF»
+        «IF @exists("_OtherUserRight«%d;_LibraryId»_«#SQLREPEAT#»") == 0»
+            «VAR NEW _OtherUserRight«%d;_LibraryId»_«#SQLREPEAT#» = 0»
+        «ENDIF»
+        «IF @exists("_GroupUserRight«%d;_LibraryId»_«#SQLREPEAT#»") == 0»
+            «VAR NEW _GroupUserRight«%d;_LibraryId»_«#SQLREPEAT#» = 0»
+        «ENDIF»
+        «IF @exists("_OtherGroupUserRight«%d;_LibraryId»_«#SQLREPEAT#»") == 0»
+            «VAR NEW _OtherGroupUserRight«%d;_LibraryId»_«#SQLREPEAT#» = 0»
+        «ENDIF»
+
+        «LET _OwnerUserRights = _OwnerUserRights+"« _OwnerUserRight«%d;_LibraryId»_«#SQLREPEAT#»»"»
+        «LET _OtherUserRights = _OtherUserRights+"« _OtherUserRight«%d;_LibraryId»_«#SQLREPEAT#»»"»
+        «LET _GroupUserRights = _GroupUserRights+"« _GroupUserRight«%d;_LibraryId»_«#SQLREPEAT#»»"»
+        «LET _OtherGroupUserRights = _OtherGroupUserRights+"« _OtherGroupUserRight«%d;_LibraryId»_«#SQLREPEAT#»»"»
+
+    «/SQLREPEAT 0;31»
+
+«INCLUDE _SqlStatus=«#SQLLIBRARY#»:OSSLibraryUserRightUpdate.phs;_MerchantId=«idMerchant»»

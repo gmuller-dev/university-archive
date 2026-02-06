@@ -1,0 +1,21 @@
+«PROC BalanceUser»
+  «IF @exists("_idUser")==1»
+    «SQLEXEC DOUBLE _frais= Select SUM(dMontant) From NDF_FACTURES where idUser= «@toi(_idUser)» group by idUser»
+    «SQLEXEC DOUBLE _Rem= Select SUM(dMontant) From NDF_ACCOUNT where idUser= «@toi(_idUser)» group by idUser»
+    «RETURN @toi(«_Rem - _frais»)»
+  «ENDIF»
+«/PROC»
+
+«PROC BalanceTotal»
+  «IF @exists("_MerchantId") == 0 »
+      «VAR NEW _MerchantId = «idMerchant»»
+  «ENDIF»
+  «VAR NEW iBalance =0 »
+  «*QUERY*»
+  «SQLOUTPUT»
+
+    «INCLUDE balance = NDF:NDF_tools.phs#BalanceUser; _idUser =«XKEY»»
+    «LET iBalance = @toi(iBalance) + @toi(balance)»
+  «/SQLOUTPUT SELECT XKEY FROM OSSUSER where idMerchant= «=@toi(_MerchantId)» »
+  «RETURN iBalance»
+«/PROC»

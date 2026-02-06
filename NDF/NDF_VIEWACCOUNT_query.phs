@@ -1,0 +1,71 @@
+«PROC Main»
+«IF @exists("_MerchantId") == 0 »
+    «VAR NEW _MerchantId = «idMerchant»»
+«ENDIF»
+«IF @exists("_idUser") == 0 »
+    «VAR NEW _idUser = «#SQLUSERID#»»
+«ENDIF»
+
+«IF @exists("_idU") == 0 »
+    «VAR NEW _idU = 0»
+«ENDIF»
+«IF @exists("iMan") == 0 »
+    «VAR NEW iMan =0»
+«ENDIF»
+«VAR NEW _OwnerUserRight = 0»
+«INCLUDE _SqlStatus=NDF:ossUserRights.phs»
+«INCLUDE _SqlStatus=NDF:ossUserRights.phs;_iUserRight=0»
+
+«VAR NEW _NavLevel = 0 »
+«INCLUDE _NavLevel=«#SQLLIBRARY#»:ProcNavigation.phs#SecureNavigationLevel»
+«IF @exists("_iPageThemeId") <> 0 »
+    «VAR NEW _PageThemeId = «_iPageThemeId»»
+«ENDIF»
+«VAR NEW _FieldCallbackLibrary = "NDF"»
+«VAR NEW _FieldCallbackScript= "NDF_VIEWACCOUNT_model.phs#CallbackField_Zone_1"»
+«VAR NEW _ZoneCallbackLibrary = "NDF"»
+«VAR NEW _ZoneCallbackScript= "NDF_VIEWACCOUNT_model.phs#CallbackZone_1"»
+«VAR NEW [object]_ZoneInfo»
+«VAR NEW [object]_TableInfo»
+«VAR NEW _PageZoneId = 1 »
+«VAR NEW _PageLibraryId = NDF_LIBRARY_ID »
+«VAR NEW _PageId = NDF_VIEWACCOUNT_PAGE_ID »
+«VAR NEW _PageViewMode = «_MonPageViewMode» »
+
+«INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneQueryInfo.phs;_ThemeId=_PageThemeId;_pZoneInfo=&_ZoneInfo»
+
+«VAR NEW _ThemeZoneId=_ZoneInfo.idThemeZone»
+«VAR NEW _SystemZoneId=_ZoneInfo.idSystemZone»
+«VAR NEW _ZoneLayoutType=_ZoneInfo.iLayoutType»
+«VAR NEW _ZoneClassId=_ZoneInfo.idClass»
+
+
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneOpen;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE;_pZoneInfo=&_ZoneInfo;_pZoneObject=&_TableInfo»
+«* header *»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneOpen;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_HEADER;_pZoneInfo=&(_ZoneInfo);_pZoneObject=&(_TableInfo)»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneComponent;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_HEADER;_ZoneFieldComponent=OSS_PAGE_ZONE_FIELD_COMPONENT_HEADER;_pZoneObject=&_TableInfo;_pZoneInfo=&_ZoneInfo »
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneClose;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_HEADER;_pZoneInfo=&(_ZoneInfo);_pZoneObject=&(_TableInfo)»
+«* body *»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneOpen;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_BODY;_pZoneInfo=&(_ZoneInfo);_pZoneObject=&(_TableInfo)»
+
+«*QUERY*»
+«IF @toi(iMan) ==0»
+  «SQLOUTPUT»
+  «INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneComponent;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_BODY;_ZoneFieldComponent=OSS_PAGE_ZONE_FIELD_COMPONENT_BODY;_pZoneObject=&_TableInfo;_pZoneInfo=&_ZoneInfo;_id=«idNDF1»;_id2 =«idNDF2»;_NDF="«aNDF»";_Mnt=«dMt»;_time=«Time1»; _time2=«Time2»;_MntP=«dMt2»»
+
+  «/SQLOUTPUT SELECT NDF_FACTURES.idNDF AS idNDF1, NDF_ACCOUNT.idNDF AS idNDF2, NDF_FACTURES.dMontant AS dMt, NDF_FACTURES.azNDF AS aNDF, NDF_FACTURES.iCTime AS Time1, NDF_ACCOUNT.iCTime AS Time2, NDF_ACCOUNT.dMontant AS dMt2 FROM NDF_FACTURES LEFT JOIN NDF_ACCOUNT ON   NDF_FACTURES.idNDF= NDF_ACCOUNT.idNdf WHERE NDF_FACTURES.idUser =«_idUser»  UNION ALL SELECT NDF_FACTURES.idNDF AS idNDF1, NDF_ACCOUNT.idNDF AS idNDF2, NDF_FACTURES.dMontant AS dMt, NDF_FACTURES.azNDF AS aNDF, NDF_FACTURES.iCTime AS Time1, NDF_ACCOUNT.iCTime AS Time2, NDF_ACCOUNT.dMontant AS dMt2 FROM NDF_FACTURES RIGHT JOIN NDF_ACCOUNT ON   NDF_FACTURES.idNDF= NDF_ACCOUNT.idNdf WHERE NDF_ACCOUNT.idUser =«_idUser» AND NDF_FACTURES.idNDF IS NULL»«*Query temporaire*»
+«ELSEIF @toi(iMan)==1 && _OwnerUserRight>=52»
+  «SQLOUTPUT»
+  «INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneComponent;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_BODY;_ZoneFieldComponent=OSS_PAGE_ZONE_FIELD_COMPONENT_BODY;_pZoneObject=&_TableInfo;_pZoneInfo=&_ZoneInfo;_id=«idNDF1»;_id2 =«idNDF2»;_NDF="«aNDF»";_Mnt=«dMt»;_time=«Time1»; _time2=«Time2»;_MntP=«dMt2»»
+  «/SQLOUTPUT SELECT NDF_FACTURES.idNDF AS idNDF1, NDF_ACCOUNT.idNDF AS idNDF2, NDF_FACTURES.dMontant AS dMt, NDF_FACTURES.azNDF AS aNDF, NDF_FACTURES.iCTime AS Time1, NDF_ACCOUNT.iCTime AS Time2, NDF_ACCOUNT.dMontant AS dMt2 FROM NDF_FACTURES LEFT JOIN NDF_ACCOUNT ON   NDF_FACTURES.idNDF= NDF_ACCOUNT.idNdf WHERE NDF_FACTURES.idUser =«=@toi(_idU)»  UNION ALL SELECT NDF_FACTURES.idNDF AS idNDF1, NDF_ACCOUNT.idNDF AS idNDF2, NDF_FACTURES.dMontant AS dMt, NDF_FACTURES.azNDF AS aNDF, NDF_FACTURES.iCTime AS Time1, NDF_ACCOUNT.iCTime AS Time2, NDF_ACCOUNT.dMontant AS dMt2 FROM NDF_FACTURES RIGHT JOIN NDF_ACCOUNT ON   NDF_FACTURES.idNDF= NDF_ACCOUNT.idNdf WHERE NDF_ACCOUNT.idUser =«=@toi(_idU)» AND NDF_FACTURES.idNDF IS NULL»«*Query temporaire*»
+«ENDIF»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneClose;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_BODY;_pZoneInfo=&(_ZoneInfo);_pZoneObject=&(_TableInfo)»
+«* footer *»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneOpen;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_FOOTER;_pZoneInfo=&(_ZoneInfo);_pZoneObject=&(_TableInfo)»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneClose;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_FOOTER;_pZoneInfo=&(_ZoneInfo);_pZoneObject=&(_TableInfo)»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneClose;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE;_pZoneInfo=&(_ZoneInfo);_pZoneObject=&(_TableInfo);_ZoneColumnList=_TableInfo.azColumnList;_ZoneColumnSort=_TableInfo.azColumnSort»
+
+
+
+
+«/PROC»

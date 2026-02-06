@@ -1,0 +1,80 @@
+«PROC Main»
+  «VAR NEW _OwnerUserRights = '00000000000000000000000000000000'»
+  «VAR NEW _OtherUserRights = '00000000000000000000000000000000'»
+  «VAR NEW _OwnerUserRight = 0»
+  «VAR NEW _OtherUserRight = 0»
+  «INCLUDE _SqlStatus=NDF:ossUserRights.phs»
+  «INCLUDE _SqlStatus=NDF:ossUserRights.phs;_iUserRight=0»
+
+
+  «IF @exists("_azFile") == 0 »
+      «VAR NEW _azFile = ""»
+  «ENDIF»
+
+  «IF @toi(_del)=0»
+   «IF  @exists("_iDate")==1»
+     «INCLUDE _Date=«#SQLLIBRARY#»:ProcDates.phs#ScanDaytimeDate;_DateString=_iDate»
+
+   «ENDIF»
+    _azMontant: «_azMontant»
+
+    «SQLSTATUS TRANSACTION BEGIN»
+      «IF @toi(iMod) == 0»
+        «IF @toi(iMan) == 0 »
+          «SQL insert into NDF_FACTURES (azNDF, dMontant, iCTime,idUser, azFilename) values ("«_azNDF»",«_azMontant», «@daytimetotime(_Date)»,«#SQLUSERID#»,"«_azFile»" )»
+        «ELSEIF @toi(iMan)==1 && @toi(_OwnerUserRight)>=52 && @toi(iUselect)==0»
+          «SQL insert into NDF_FACTURES (azNDF, dMontant, iCTime,idUser, azFilename) values ("«_azNDF»",«_azMontant», «@daytimetotime(_Date)»,«=@toi(_azUser1)»,"«_azFile»" )»
+        «ELSEIF @toi(iMan)==1 && @toi(_OwnerUserRight)>=52 && @toi(iUselect)==1»
+          _idU : «_idU»
+          «SQL insert into NDF_FACTURES (azNDF, dMontant, iCTime,idUser, azFilename) values ("«_azNDF»",«_azMontant», «@daytimetotime(_Date)»,«=@toi(_idU)»,"«_azFile»" )»
+        «ENDIF»
+      «ELSEIF @toi(iMod )==1»
+        «IF @toi(iMan) == 0 »
+          «SQL UPDATE NDF_FACTURES SET azNDF="«_azNDF»" , dMontant = «_azMontant», iCTime= «@daytimetotime(_Date)»,idUser = «#SQLUSERID#» , azFilename = "«_azFile»" WHERE idNDF =«_id»»
+        «ELSEIF @toi(iMan)==1 && @toi(_OwnerUserRight)>=52»
+          «SQL UPDATE NDF_FACTURES SET azNDF="«_azNDF»" , dMontant = «_azMontant», iCTime= «@daytimetotime(_Date)», azFilename = "«_azFile»" WHERE idNDF =«_id»»
+        «ENDIF»
+      «ENDIF»
+    «SQLSTATUS TRANSACTION END»
+    #SQLSTATUS# : «#SQLSTATUS#» <br>
+    «VAR NEW azCGI=""»
+  	«LIST»
+  		«IF CGINAME<>"Sql"»
+  			«IF azCGI<>""»«LET azCGI=azCGI+"&"»«ENDIF»
+  			«LET azCGI=azCGI+"«CGINAME»=«CGIVALUE»"»
+  		«ENDIF»
+  	«/LIST CGI»
+    «IF @toi(iMod) == 0 || @toi(iUselect)==1»
+  	 <META http-equiv="Refresh" content="0;URL=/Scripts/sql.exe?Sql=NDF:NDF_ADDWORKER_view.phs&«azCGI»">
+    «ELSEIF @toi(iMod) == 1»
+      <META http-equiv="Refresh" content="0;URL=/Scripts/sql.exe?Sql=NDF:NDF_VIEWACCOUNT_view.phs&«azCGI»">
+    «ENDIF»
+
+  «ELSEIF @toi(_del)=1»
+    «IF @toi(iMod)==1 && _OwnerUserRight>=52 && @toi(iMan)==1»
+      «SQLSTATUS TRANSACTION BEGIN»
+
+        «SQL  DELETE from NDF_FACTURES where idNDF = «_id» »
+          «*Add delete from NDF_ACCOUNT*»
+      «SQLSTATUS TRANSACTION END»
+      #SQLSTATUS# : «#SQLSTATUS#» <br>
+      «VAR NEW azCGI=""»
+    	«LIST»
+    		«IF CGINAME<>"Sql"»
+    			«IF azCGI<>""»«LET azCGI=azCGI+"&"»«ENDIF»
+    			«LET azCGI=azCGI+"«CGINAME»=«CGIVALUE»"»
+    		«ENDIF»
+    	«/LIST CGI»
+      <META http-equiv="Refresh" content="0;URL=/Scripts/sql.exe?Sql=NDF:NDF_VIEWACCOUNT_view.phs&«azCGI»">
+      «ENDIF»
+    «ENDIF»
+  «ENDIF»
+
+«/PROC»
+
+«PROC GetExpense»
+  «IF @toi(iMod)==1»
+    «SQLEXEC OBJECT _exp = Select * from NDF_FACTURES where idNDF = «_id» limit 1 »
+    «RETURN _exp»
+  «ENDIF»
+«/PROC»

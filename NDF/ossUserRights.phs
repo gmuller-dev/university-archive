@@ -1,0 +1,41 @@
+«VAR NEW _SqlStatus = 1»
+
+«IF @exists("_MerchantId")==0»
+	«VAR NEW _MerchantId = idMerchant»
+«ENDIF»
+
+
+«IF @exists("_LibraryId")==0»
+	«VAR NEW _LibraryId = NDF_LIBRARY_ID»
+«ENDIF»
+
+«IF @exists("_OwnerUserRights") == 0»
+	«VAR NEW _OwnerUserRights = '00000000000000000000000000000000'»
+«ENDIF»
+«IF @exists("_OtherUserRights") == 0»
+	«VAR NEW _OtherUserRights = '00000000000000000000000000000000'»
+«ENDIF»
+«IF @exists("_OtherUserRight") == 0»
+	«VAR NEW _OtherUserRight = 0»
+«ENDIF»
+«IF @exists("_OwnerUserRight") == 0»
+	«VAR NEW _OwnerUserRight = 0»
+«ENDIF»
+«IF @exists("_UserId")==0»
+	«VAR NEW _UserId = «#SQLUSERID#»»
+«ENDIF»
+
+«LET _OwnerUserRights = '00000000000000000000000000000000'»
+«LET _OtherUserRights = '00000000000000000000000000000000'»
+«LET _OwnerUserRight = 0»
+«LET _OtherUserRight = 0»
+
+
+«INCLUDE _SqlStatus=«#SQLLIBRARY#»:OSSLibraryUserRight.phs »
+
+«IF @exists("_iUserRight") <> 0»
+	«LET _OtherUserRight= _OtherUserRights[«_iUserRight»]»
+	«LET _OwnerUserRight=_OwnerUserRights[«_iUserRight»]»
+«ENDIF»
+
+«RETURN _SqlStatus»

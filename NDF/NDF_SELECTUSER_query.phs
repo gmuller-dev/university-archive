@@ -1,0 +1,70 @@
+«PROC Main»
+
+
+
+
+«IF @exists("_MerchantId") == 0 »
+    «VAR NEW _MerchantId = «idMerchant»»
+«ENDIF»
+
+<script type="text/javascript">
+  document.getElementById("loader").style.display = "none";
+</script>
+«VAR NEW _NavLevel = 0 »
+«INCLUDE _NavLevel=«#SQLLIBRARY#»:ProcNavigation.phs#SecureNavigationLevel»
+«IF @exists("_iPageThemeId") <> 0 »
+    «VAR NEW _PageThemeId = «_iPageThemeId»»
+«ENDIF»
+«VAR NEW _FieldCallbackLibrary = "NDF"»
+«VAR NEW _FieldCallbackScript= "NDF_SELECTUSER_model.phs#CallbackField_Zone_1"»
+«VAR NEW _ZoneCallbackLibrary = "NDF"»
+«VAR NEW _ZoneCallbackScript= "NDF_SELECTUSER_model.phs#CallbackZone_1"»
+«VAR NEW [object]_ZoneInfo»
+«VAR NEW [object]_TableInfo»
+«VAR NEW _PageZoneId = 1 »
+«VAR NEW _PageLibraryId = NDF_LIBRARY_ID »
+«VAR NEW _PageId = NDF_SELECTUSER_PAGE_ID »
+«VAR NEW _PageViewMode = «_MonPageViewMode» »
+
+«INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneQueryInfo.phs;_ThemeId=_PageThemeId;_pZoneInfo=&_ZoneInfo»
+
+«VAR NEW _ThemeZoneId=_ZoneInfo.idThemeZone»
+«VAR NEW _SystemZoneId=_ZoneInfo.idSystemZone»
+«VAR NEW _ZoneLayoutType=_ZoneInfo.iLayoutType»
+«VAR NEW _ZoneClassId=_ZoneInfo.idClass»
+«* open zone *»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneOpen;_ThemeZoneId=_ZoneInfo.idThemeZone;_ZoneLayoutType=_ZoneInfo.iLayoutType;_ZoneStyle=_ZoneInfo.azStyle;_ZoneClassId=_ZoneInfo.idClass;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_ZONE;_pZoneObject=&_TableInfo;_pZoneInfo=&_ZoneInfo»
+«*open table*»
+«*INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneOpen;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE;_pZoneInfo=&_ZoneInfo;_pZoneObject=&_TableInfo*»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneOpen;;_ThemeZoneId=_ZoneInfo.idThemeZone;_ZoneLayoutType=_ZoneInfo.iLayoutType;_ZoneStyle=_ZoneInfo.azStyle;_ZoneClassId=_ZoneInfo.idClass;_ZoneComponent=2;_pZoneInfo=&_ZoneInfo»
+«* header *»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneOpen;_ThemeZoneId=_ZoneInfo.idThemeZone;_ZoneLayoutType=_ZoneInfo.iLayoutType;_ZoneStyle=_ZoneInfo.azStyle;_ZoneClassId=_ZoneInfo.idClass;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_HEADER;_pZoneInfo=&_ZoneInfo»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneComponent;_ZoneFieldComponent=OSS_PAGE_ZONE_FIELD_COMPONENT_HEADER;_pZoneObject=&_TableInfo;_pZoneInfo=&_ZoneInfo»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneClose;_ThemeZoneId=_ZoneInfo.idThemeZone;_ZoneLayoutType=_ZoneInfo.iLayoutType;_ZoneStyle=_ZoneInfo.azStyle;_ZoneClassId=_ZoneInfo.idClass;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_HEADER;_pZoneInfo=&_ZoneInfo»
+«* body *»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneOpen;_ThemeZoneId=_ZoneInfo.idThemeZone;_ZoneLayoutType=_ZoneInfo.iLayoutType;_ZoneStyle=_ZoneInfo.azStyle;_ZoneClassId=_ZoneInfo.idClass;_ZoneComponent=4;_pZoneInfo=&_ZoneInfo»
+«*INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneOpen;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_BODY;_pZoneInfo=&(_ZoneInfo);_pZoneObject=&(_TableInfo)*»
+«VAR NEW [object]UserInfo»
+«*QUERY*»
+«SQLOUTPUT»
+«INCLUDE _query=«#SQLLIBRARY#»:OSSUserInfo.phs;_UserId=«XKEY»;_MerchantId= «=@toi(_MerchantId)» ;_pUserInfo=&UserInfo»
+«IF @toi(_query)==1»
+«INCLUDE balance = NDF:NDF_tools.phs#BalanceUser; _idUser =«XKEY»»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneComponent;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_BODY;_ZoneFieldComponent=OSS_PAGE_ZONE_FIELD_COMPONENT_BODY;_pZoneObject=&_TableInfo;_pZoneInfo=&_ZoneInfo;_UserId = «XKEY»;_Name= «UserInfo.azUserRealname»; _Surname= «UserInfo.azUserFirstName»;_Email =«UserInfo.azUserEMail»;_balance=«balance» »
+«ENDIF»
+«/SQLOUTPUT SELECT XKEY FROM OSSUSER where idMerchant= «=@toi(_MerchantId)» ;»
+«*close body*»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneClose;_ThemeZoneId=_ZoneInfo.idThemeZone;_ZoneLayoutType=_ZoneInfo.iLayoutType;_ZoneStyle=_ZoneInfo.azStyle;_ZoneClassId=_ZoneInfo.idClass;_ZoneComponent=4;_pZoneObject=&_TableInfo;_pZoneInfo=&_ZoneInfo»
+«*INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneClose;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_BODY;_pZoneInfo=&(_ZoneInfo);_pZoneObject=&(_TableInfo)*»
+«* footer *»
+«*INCLUDE «*#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneOpen;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_FOOTER;_pZoneInfo=&(_ZoneInfo);_pZoneObject=&(_TableInfo)*»
+«*INCLUDE «*#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneClose;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE_FOOTER;_pZoneInfo=&(_ZoneInfo);_pZoneObject=&(_TableInfo)*»
+«*close table*»
+«*INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneClose;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_TABLE;_pZoneInfo=&(_ZoneInfo);_pZoneObject=&(_TableInfo);_ZoneColumnList=_TableInfo.azColumnList;_ZoneColumnSort=_TableInfo.azColumnSort*»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneClose;_ThemeZoneId=_ZoneInfo.idThemeZone;_ZoneLayoutType=_ZoneInfo.iLayoutType;_ZoneStyle=_ZoneInfo.azStyle;_ZoneClassId=_ZoneInfo.idClass;_ZoneComponent=2;_ZoneColumnList=_TableInfo.azColumnList;_ZoneColumnSort=_TableInfo.azColumnSort;_pZoneObject=&_TableInfo;_pZoneInfo=&_ZoneInfo»
+«close zone»
+«INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZoneClose;_PageZoneId=1;_ThemeZoneId=_ZoneInfo.idThemeZone;_ZoneLayoutType=_ZoneInfo.iLayoutType;_ZoneStyle=_ZoneInfo.azStyle;_ZoneClassId=_ZoneInfo.idClass;_ZoneComponent=OSS_PAGE_ZONE_COMPONENT_ZONE;_pZoneObject=&_TableInfo;_pZoneInfo=&_ZoneInfo»
+
+
+
+«/PROC»

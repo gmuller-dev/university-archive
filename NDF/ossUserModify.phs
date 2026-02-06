@@ -1,0 +1,5 @@
+«VAR NEW _SqlStatus = 1»
+
+«INCLUDE _SqlStatus=oga:ossUserAdd.phs»
+
+«RETURN _SqlStatus»

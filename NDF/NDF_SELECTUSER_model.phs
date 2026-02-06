@@ -1,0 +1,285 @@
+«PROC RegisterSystemPage»
+«IF @exists("_MerchantId") == 0 »
+    «VAR NEW _MerchantId = «idMerchant»»
+«ENDIF»
+«LET _PageName="Select user;Selection utilisateur;"»
+
+ «INCLUDE _SystemPageId=«#SQLLIBRARY#»:OSSPageRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_SELECTUSER_PAGE_ID»
+ «IF _SystemPageId>0»
+    «INCLUDE _b_status=«#SQLLIBRARY#»:OSSPageUpdateOpen.phs»
+
+    «*Register Zone 1*»
+    «VAR NEW _ZoneName="table"»
+
+    «INCLUDE _SystemZoneId=«#SQLLIBRARY#»:OSSPageZoneRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_SELECTUSER_PAGE_ID;_PageZoneId=1;_ZoneType=OSS_PAGE_ZONE_TYPE_NORMAL;_ZoneLayoutType=OSS_PAGE_ZONE_LAYOUT_TYPE_TABLE_DATATABLE;_ZoneLayoutStyle=2;_ZoneRequired=1;_ZoneDirection=1»
+    _SystemZoneId :«_SystemZoneId»
+    «INCLUDE _SqlStatus=«#SQLLIBRARY#»:OSSPageZoneUpdateOpen.phs;PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_MerchantId=«_MerchantId»»
+    «IF _SystemZoneId>0»
+        «*Register system fields for Zone 1*»
+        «*Field 101*»
+        «LET _FieldName="Name;Nom;"»
+        «INCLUDE _SystemFieldId=«#SQLLIBRARY#»:OSSPageZoneFieldRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_SELECTUSER_PAGE_ID;_PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_FieldId=101;_FieldType=OSS_PAGE_ZONE_FIELD_TYPE_STATIC_TEXT;_FieldRequired=2;_FieldUnique=2;_FieldHAlign=0»
+        «*Field 102*»
+
+        «LET _FieldName="Surname;Prénom"»
+        «INCLUDE _SystemFieldId=«#SQLLIBRARY#»:OSSPageZoneFieldRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_SELECTUSER_PAGE_ID;_PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_FieldId=102;_FieldType=OSS_PAGE_ZONE_FIELD_TYPE_STATIC_TEXT;_FieldRequired=2;_FieldUnique=2;_FieldHAlign=0»
+        «LET _FieldName="Email;Email"»
+        «INCLUDE _SystemFieldId=«#SQLLIBRARY#»:OSSPageZoneFieldRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_SELECTUSER_PAGE_ID;_PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_FieldId=103;_FieldType=OSS_PAGE_ZONE_FIELD_TYPE_STATIC_TEXT;_FieldRequired=2;_FieldUnique=2;_FieldHAlign=0»
+
+        «LET _FieldName="Balance;Balance"»
+        «INCLUDE _SystemFieldId=«#SQLLIBRARY#»:OSSPageZoneFieldRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_SELECTUSER_PAGE_ID;_PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_FieldId=104;_FieldType=OSS_PAGE_ZONE_FIELD_TYPE_STATIC_TEXT;_FieldRequired=2;_FieldUnique=2;_FieldHAlign=0»
+
+        «LET _FieldName="Balance;Balance"»
+        «INCLUDE _SystemFieldId=«#SQLLIBRARY#»:OSSPageZoneFieldRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_SELECTUSER_PAGE_ID;_PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_FieldId=105;_FieldType=OSS_PAGE_ZONE_FIELD_TYPE_STATIC_TEXT;_FieldRequired=2;_FieldUnique=2;_FieldHAlign=0»
+
+        «LET _FieldName="Details;Détails"»
+        «INCLUDE _SystemFieldId=«#SQLLIBRARY#»:OSSPageZoneFieldRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_SELECTUSER_PAGE_ID;_PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_FieldId=106;_FieldType=OSS_PAGE_ZONE_FIELD_TYPE_STATIC_TEXT;_FieldRequired=2;_FieldUnique=2;_FieldHAlign=0»
+
+
+        «*Register other fields by calling OSSPageZoneFieldRegister again*»
+    «ENDIF»
+    «INCLUDE _SqlStatus=«#SQLLIBRARY#»:OSSPageZoneUpdateClose.phs;PageZoneId=1;_FieldLibraryId=NDF_LIBRARY_ID;_MerchantId=«_MerchantId»»
+
+
+    «*Register Zone 2*»
+    «VAR NEW _ZoneName="Buttons"»
+
+    «INCLUDE _SystemZoneId=«#SQLLIBRARY#»:OSSPageZoneRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_SELECTUSER_PAGE_ID;_PageZoneId=2;_ZoneType=OSS_PAGE_ZONE_TYPE_NORMAL;_ZoneLayoutType=OSS_PAGE_ZONE_LAYOUT_TYPE_MENU_NORMAL;_ZoneLayoutStyle=2;_ZoneRequired=1;_ZoneDirection=1»
+    _SystemZoneId :«_SystemZoneId»
+    «INCLUDE _SqlStatus=«#SQLLIBRARY#»:OSSPageZoneUpdateOpen.phs;PageZoneId=2;_FieldLibraryId=NDF_LIBRARY_ID;_MerchantId=«_MerchantId»»
+    «IF _SystemZoneId>0»
+        «*Register system fields for Zone 2*»
+        «*Field 201*»
+        «LET _FieldName="Back;Retour;"»
+        «INCLUDE _SystemFieldId=«#SQLLIBRARY#»:OSSPageZoneFieldRegister.phs;_PageLibraryId=NDF_LIBRARY_ID;_PageId=NDF_SELECTUSER_PAGE_ID;_PageZoneId=2;_FieldLibraryId=NDF_LIBRARY_ID;_FieldId=201;_FieldType=OSS_PAGE_ZONE_FIELD_TYPE_BUTTON;_FieldRequired=2;_FieldUnique=2;_FieldHAlign=0»
+
+
+
+        «*Register other fields by calling OSSPageZoneFieldRegister again*»
+    «ENDIF»
+    «INCLUDE _SqlStatus=«#SQLLIBRARY#»:OSSPageZoneUpdateClose.phs;PageZoneId=2;_FieldLibraryId=NDF_LIBRARY_ID;_MerchantId=«_MerchantId»»
+
+    «*Register other zones by calling OSSPageZoneRegister again*»
+    «INCLUDE _SqlStatus=«#SQLLIBRARY#»:OSSPageUpdateClose.phs»
+«ENDIF»
+«INCLUDE _b_status=«#SQLLIBRARY#»:OSSThemePageZoneUpdateClose.phs»
+«RETURN 1»
+«/PROC»
+
+
+
+«PROC RegisterDefaultThemes»
+
+    «VAR NEW _b_status = 1»
+    «VAR NEW _FieldLibraryId = NDF_LIBRARY_ID »
+    «IF @toi(_PageLibraryId)==NDF_LIBRARY_ID »
+        «IF @toi(_PageId)== NDF_SELECTUSER_PAGE_ID »
+
+            «* zone 1*»
+            «IF _b_status ==1 »
+                «INCLUDE _b_status = NDF:NDF_SELECTUSER_model.phs#RegisterThemePagesZone_1 »
+            «ENDIF»
+            «IF _b_status ==1 »
+                «INCLUDE _b_status = NDF:NDF_SELECTUSER_model.phs#RegisterThemePagesZone_2 »
+            «ENDIF»
+
+
+        «ENDIF»
+    «ENDIF»
+    «RETURN _b_status»
+«/PROC»
+
+«PROC RegisterThemePagesZone_1»
+
+    «VAR NEW _FieldLibraryId = NDF_LIBRARY_ID »
+    «VAR NEW _FieldVisible = 1»
+    «VAR NEW _PageZoneId = 1»
+    «VAR NEW _ZoneName=""»
+    «VAR NEW _b_status = 1»
+    «VAR NEW _SystemZoneId = 0 »
+    «VAR NEW [object]_objZoneInfo»
+    «VAR NEW _ZoneLabel = "" »
+    «LET _ZoneLabel="List User;Liste utilisateur"»
+    «INCLUDE _b_status=«#SQLLIBRARY#»:OSSThemePageZoneRegister.phs;_ZoneColumns=3;_ZoneVisible=1;_pZoneObject=&_objZoneInfo;_ZoneStyleTitle=OSS_PAGE_ZONE_STYLE_TITLE_NORMAL;_ZoneStyleHeader=OSS_PAGE_ZONE_STYLE_HEADER_NORMAL;_ZoneLayoutType=OSS_PAGE_ZONE_LAYOUT_TYPE_TABLE_DATATABLE»
+    «IF _b_status==0»
+        «INCLUDE «#SQLLIBRARY#»:ProcDebug.phs#ErrorLog;_err_message="cannot registered Zone 1 ";_err_file="NDF_SELECTUSER_model.phs#RegisterThemePagesZone_1";_err_number="0x0001";_bForce=1»
+    «ELSE»
+        «INCLUDE _b_status=«#SQLLIBRARY#»:OSSThemePageZoneUpdateOpen.phs»
+        «IF _b_status == 0»
+            «INCLUDE «#SQLLIBRARY#»:ProcDebug.phs#ErrorLog;_err_message="Zone 1 OSSThemePageZoneUpdateOpen failed";_err_file="NDF_SELECTUSER_model.phs#RegisterThemePagesZone_1";_err_number="0x0002";_bForce=1»
+        «ELSE»
+            «VAR NEW _FieldColumn=1»
+            «INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneFieldRegister.phs;_FieldId=101;_FieldOrder=1»
+            «INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneFieldRegister.phs;_FieldId=102;_FieldOrder=2»
+            «INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneFieldRegister.phs;_FieldId=103;_FieldOrder=3»
+            «INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneFieldRegister.phs;_FieldId=104;_FieldOrder=4»
+            «INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneFieldRegister.phs;_FieldId=105;_FieldOrder=5»
+            «INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneFieldRegister.phs;_FieldId=106;_FieldOrder=6»
+
+
+            «INCLUDE _b_status=«#SQLLIBRARY#»:OSSThemePageZoneUpdateClose.phs»
+            «IF _b_status == 0»
+                «INCLUDE «#SQLLIBRARY#»:ProcDebug.phs#ErrorLog;_err_message="Zone 1 OSSThemePageZoneUpdateClose failed";_err_file="NDF_SELECTUSER_model.phs.phs#RegisterThemePagesZone_1";_err_number="0x0003";_bForce=1»
+            «ENDIF»
+        «ENDIF»
+    «ENDIF»
+    «RETURN _b_status»
+«/PROC»
+
+
+«PROC RegisterThemePagesZone_2»
+
+    «VAR NEW _FieldLibraryId = NDF_LIBRARY_ID »
+    «VAR NEW _FieldVisible = 1»
+    «VAR NEW _PageZoneId = 2»
+    «VAR NEW _ZoneName=""»
+    «VAR NEW _b_status = 1»
+    «VAR NEW _SystemZoneId = 0 »
+    «VAR NEW [object]_objZoneInfo»
+    «VAR NEW _ZoneLabel = "" »
+    «LET _ZoneLabel="list user buttons;boutons liste utilisateur"»
+    «INCLUDE _b_status=«#SQLLIBRARY#»:OSSThemePageZoneRegister.phs;_ZoneColumns=3;_ZoneVisible=1;_pZoneObject=&_objZoneInfo;_ZoneStyleTitle=OSS_PAGE_ZONE_STYLE_TITLE_NONE;_ZoneStyleHeader=OSS_PAGE_ZONE_STYLE_HEADER_NORMAL»
+    «IF _b_status==0»
+        «INCLUDE «#SQLLIBRARY#»:ProcDebug.phs#ErrorLog;_err_message="cannot registered Zone 2 ";_err_file="NDF_SELECTUSER_model.phs#RegisterThemePagesZone_2";_err_number="0x0001";_bForce=1»
+    «ELSE»
+        «INCLUDE _b_status=«#SQLLIBRARY#»:OSSThemePageZoneUpdateOpen.phs»
+        «IF _b_status == 0»
+            «INCLUDE «#SQLLIBRARY#»:ProcDebug.phs#ErrorLog;_err_message="Zone 2 OSSThemePageZoneUpdateOpen failed";_err_file="NDF_SELECTUSER_model.phs#RegisterThemePagesZone_2";_err_number="0x0002";_bForce=1»
+        «ELSE»
+            «VAR NEW _FieldColumn=1»
+            «INCLUDE «#SQLLIBRARY#»:OSSThemePageZoneFieldRegister.phs;_FieldId=201;_FieldOrder=1»
+
+
+            «INCLUDE _b_status=«#SQLLIBRARY#»:OSSThemePageZoneUpdateClose.phs»
+            «IF _b_status == 0»
+                «INCLUDE «#SQLLIBRARY#»:ProcDebug.phs#ErrorLog;_err_message="Zone 2 OSSThemePageZoneUpdateClose failed";_err_file="NDF_SELECTUSER_model.phs.phs#RegisterThemePagesZone_2";_err_number="0x0003";_bForce=1»
+            «ENDIF»
+        «ENDIF»
+    «ENDIF»
+    «RETURN _b_status»
+«/PROC»
+
+«PROC CallbackZone»
+«VAR NEW _Visible=_PageZoneVisible»
+    «IF _PageLibraryId==NDF_LIBRARY_ID && _PageZoneId==1»
+        «INCLUDE _Visible = NDF:NDF_SELECTUSER_model.phs#CallbackZone_1»
+    «ELSEIF _PageLibraryId==NDF_LIBRARY_ID && _PageZoneId==2»
+        «INCLUDE _Visible = NDF:NDF_SELECTUSER_model.phs#CallbackZone_2»
+
+    «ENDIF»
+
+    «RETURN 1»
+
+«/PROC»
+
+«PROC CallbackZone_1»
+    «VAR NEW _Visible=_PageZoneVisible»
+    «IF @exists("_PageZoneComponent")==0»
+        «VAR NEW _ZoneCallbackLibrary = "NDF" »
+        «VAR NEW _ZoneCallbackScript= "NDF_SELECTUSER_model.phs#CallbackZone_1"»
+        <div style="text-align: center;" class="clearfix" id="loader">
+          <div class="phone-12">
+            <div class="loader loader">
+              <span class="fa fa-spin fa-circle-o-notch"></span>
+            </div>
+          </div>
+        </div>
+        «INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZone;_PageZoneDivId="UserList";_bEmptyZone=0 »
+
+    «ENDIF»
+    «RETURN _Visible»
+«/PROC»
+«PROC CallbackZone_2»
+    «VAR NEW _Visible=_PageZoneVisible»
+
+    «IF @exists("_PageZoneComponent")==0»
+        «INCLUDE «#SQLLIBRARY#»:ProcPageTheme.phs#ViewPageZone»
+    «ENDIF»
+
+    «RETURN _Visible»
+«/PROC»
+
+
+«PROC CallbackField»
+
+    «VAR NEW _Visible=-1»
+
+    «IF _ZoneFieldLibraryId==NDF_LIBRARY_ID  &&  _PageZoneId==1 &&_ZoneFieldVisible==1»
+        «INCLUDE _Visible = NDF:NDF_SELECTUSER_model.phs#CallbackField_Zone_1»
+    «ELSEIF _ZoneFieldLibraryId==NDF_LIBRARY_ID  &&  _PageZoneId==2 &&_ZoneFieldVisible==1»
+        «INCLUDE _Visible = NDF:NDF_SELECTUSER_model.phs#CallbackField_Zone_2»
+
+
+    «ENDIF»
+    «RETURN _Visible»
+«/PROC»
+
+«PROC CallbackField_Zone_1»
+  «VAR NEW _Visible=-1»
+
+  «IF _ZoneFieldId == 101»
+    «LET _Visible=_ZoneFieldVisible»
+    «IF _ZoneFieldComponent==OSS_PAGE_ZONE_FIELD_COMPONENT_HEADER»
+    «WRITE LANGUAGE %html;Name; Nom»
+    «ELSEIF @toi(_ZoneFieldComponent)==OSS_PAGE_ZONE_FIELD_COMPONENT_BODY»
+    «=atohtml2(_Name)»
+    «ENDIF»
+  «*Field 102*»
+  «ELSEIF _ZoneFieldId==102»
+    «LET _Visible=_ZoneFieldVisible»
+    «IF _ZoneFieldComponent==OSS_PAGE_ZONE_FIELD_COMPONENT_HEADER»
+      «WRITE LANGUAGE %html;Surame; Prénom»
+    «ELSEIF @toi(_ZoneFieldComponent)==OSS_PAGE_ZONE_FIELD_COMPONENT_BODY»
+      «=@atohtml2( _Surname)»
+    «ENDIF»
+  «ELSEIF _ZoneFieldId==103»
+    «LET _Visible=_ZoneFieldVisible»
+    «IF _ZoneFieldComponent==OSS_PAGE_ZONE_FIELD_COMPONENT_HEADER»
+      «WRITE LANGUAGE %html;Email; Email»
+    «ELSEIF @toi(_ZoneFieldComponent)==OSS_PAGE_ZONE_FIELD_COMPONENT_BODY»
+      «=@atohtml2(_Email)»
+    «ENDIF»
+  «ELSEIF _ZoneFieldId==104»
+      «LET _Visible=_ZoneFieldVisible»
+      «IF _ZoneFieldComponent==OSS_PAGE_ZONE_FIELD_COMPONENT_HEADER»
+          «WRITE LANGUAGE %html;Balance; Balance»
+      «ELSEIF @toi(_ZoneFieldComponent)==OSS_PAGE_ZONE_FIELD_COMPONENT_BODY»
+          «IF @toi(_balance) >=-100»
+            <span class="label-valid">«_balance»</span>
+          «ELSEIF @toi(_balance) <=-1000 »
+            <span class="label-alert">«_balance»</span>
+          «ELSEIF @toi(_balance) <-100»
+            <span class="label-warning">«_balance»</span>
+          «ENDIF»
+      «ENDIF»
+  «ELSEIF _ZoneFieldId==105»
+    «LET _Visible=_ZoneFieldVisible»
+    «IF _ZoneFieldComponent==OSS_PAGE_ZONE_FIELD_COMPONENT_HEADER»
+      «WRITE LANGUAGE %html;View Expense Report; Voir les notes de frais»
+    «ELSEIF @toi(_ZoneFieldComponent)==OSS_PAGE_ZONE_FIELD_COMPONENT_BODY»
+
+        <button  class="btn-default" type="button"  onclick="onView(«_Userid»)">«WRITE LANGUAGE View Expense Report;Afficher Note de Frais»</button>
+
+    «ENDIF»
+  «ENDIF»
+  «RETURN _Visible»
+«/PROC»
+
+«PROC CallbackField_Zone_2»
+
+«*Field 201*»
+«IF _ZoneFieldId == 201»
+    «LET _Visible=_ZoneFieldVisible»
+    «IF _ZoneFieldComponent==OSS_PAGE_ZONE_FIELD_COMPONENT_VALUE»
+
+
+          <button class="btn-default" type="button"  onclick="onBack()">«WRITE LANGUAGE Back;Retour»</button>
+
+
+
+    «ENDIF»
+
+«ENDIF»
+«RETURN _Visible»
+
+«/PROC»

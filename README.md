@@ -13,6 +13,7 @@ A consolidated archive of university projects and coursework.
 | Mini-Projet-Jeu-Tir | Python | Mini shooting game |
 | Mini-Projet-PyPendu | Python | Hangman game in console |
 | EducationalPlateform | JavaScript | Educational platform project |
+| tp_chat_socket_RE52 | HTML | Socket-based chat application |
 
 ## Note
 
